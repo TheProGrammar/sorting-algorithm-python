@@ -1,4 +1,4 @@
-# Pong - Python
+# The Sorting Algorithm - Python
 
 ![sorting_algorithm](https://user-images.githubusercontent.com/68731924/135641654-792b09c0-edcc-4e27-800b-cc494b23acec.gif)
 
