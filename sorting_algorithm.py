@@ -5,6 +5,7 @@ from colors import color_dict
 # Initialize pygame essentials
 pygame.init()
 
+# Load the background image
 image = pygame.image.load("bg.jpg")
 image_rect = image.get_rect()
 
@@ -67,6 +68,7 @@ def generate_lines():
     new_color = random.choice(list(color_dict))
     new_color = str(new_color)
 
+    # Create the total_lines amount of objects and fill the line list with them
     for _ in range(total_lines):
         line = Line(new_color)
         line.rect.x += line_x_position
@@ -83,10 +85,17 @@ def draw_lines():
 
 def redraw_lines():
     """Empty the list filled with line objects.
-    Generate new lines and redraw them on screen again."""
+    Generate new lines and redraw them on the screen again."""
     drawn_lines.clear()
     generate_lines()
     draw_lines()
+
+
+def sort():
+    """Sort the objects inside the line list by height"""
+    sorted_list = sorted(drawn_lines, key=lambda x: x.height, reverse=True)
+    for line in sorted_list:
+        print(line.height)
 
 
 def main():
@@ -102,6 +111,8 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     redraw_lines()
+                elif event.key == pygame.K_RIGHT:
+                    sort()
 
         # Generate lines (if not generated)
         if not is_generated:
@@ -118,5 +129,4 @@ def main():
 
 
 main()
-# Close the program
 pygame.quit()
