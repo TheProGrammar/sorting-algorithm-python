@@ -13,23 +13,19 @@ WHITE = (255, 255, 255)
 SCREEN_BG_COLOR = (30, 30, 30)
 
 # Time / FPS
-FPS = 600
+FPS = 60
 
 display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+# Draw the display shape sized and positioned as display
+# so we can use it's coordinates for positioning other elements
+display_rect = display.get_rect()
 pygame.display.set_caption("Sorting algorithm")
 clock = pygame.time.Clock()
-
-# Draws the rectangular shape sized and positioned as display
-# so we can use it's coordinates for positioning
-display_rect = display.get_rect()
-
-# bottom left (0, 400)
-# top left (0, 0)
 
 line_width = 10
 
 # Total number of lines in the screen
-total_lines = int(display.get_width() / line_width)  # 200
+total_lines = int(display.get_width() / line_width)
 
 # Pygame draws objects from the center/middle of the object
 # Shift all lines to the right by half of the line width to fix the issue
@@ -39,40 +35,27 @@ line_offset = line_width / 2 - 1
 drawn_lines = []
 
 lines_groups = pygame.sprite.Group()
+test = pygame.Surface((line_width, 400))
+test.fill('White')
 
 
 class Line(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__()
-        self.width = line_width
-        self.height = random.randint(0, 400)
-        self.color = WHITE
+        super(Line, self).__init__()
+        self.rect = pygame.Rect()
 
 
 def generate_lines():
-    line_pos = 0
-    for _ in range(total_lines):
-
-        # drawn_lines.append(Line())
-        lines_groups.add(Line())
-
-        # line = pygame.draw.line(display, WHITE, (display_rect.bottomleft[0] + line_pos + line_offset, 400),
-        #                         (display_rect.topleft[0] + line_pos + line_offset, random.randint(0, 400)), line_width)
-        # line_pos += line_width
-        # drawn_lines.append(line)
+    for _ in range(1):
+        line = Line()
 
 
-# def sort_lines():
-#     line_pos = 0
-#     for line in drawn_lines:
-#         display.blit(display, ((display_rect.topleft[0] + line_pos), (display_rect.topleft[0] + line_pos)))
-#         line_pos += line_width
-
-# def randomize_lines():
-#     random.shuffle(drawn_lines)
+def draw_lines():
+    for line in lines_groups:
+        display.blit(line, (0, 400))
 
 
-def game():
+def main():
     is_generated = False
     is_sorted = False
 
@@ -87,15 +70,12 @@ def game():
         if not is_generated:
             generate_lines()
             is_generated = True
-        # sort_lines()
-        # if not is_sorted:
-        #     sort_lines()
-        #     is_sorted = False
+
+        draw_lines()
 
         # Refresh/update the images on the display
         pygame.display.flip()
 
 
-game()
-print(lines_groups)
+main()
 pygame.quit()
