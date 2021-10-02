@@ -10,7 +10,7 @@
 In computer science, a sorting algorithm is an algorithm that puts elements of a list into an order. The most frequently used orders are numerical order and lexicographical order, and either ascending or descending.
 
 ## Description
-My first attempt to make a simple sorting algorithm using Python. The main idea was to first create a certain amount of line objects with fixed width and random height and put them all into a list then to draw them from the list onto the screen. The final task is to compare each line objects height and redraw them again in descending order.
+My first attempt to make a simple sorting algorithm using Python. The main idea was to first create a certain amount of line objects from a class with fixed width and random height and put them into a list and then draw them onto the screen. The final task is to compare each line objects height and redraw them again in descending order onto screen again.
 
 To make new lines press LEFT ARROW key, to sort them press RIGHT ARROW key on the keyboard. ESC to quit the program.
 
