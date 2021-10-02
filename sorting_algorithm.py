@@ -32,7 +32,7 @@ pygame.display.set_caption("Sorting algorithm")
 clock = pygame.time.Clock()
 
 # Width of the line (change for the total number of lines)
-line_width = 10
+line_width = 1
 
 # Total number of lines in the screen
 total_lines = int(display.get_width() / line_width)
@@ -40,21 +40,17 @@ total_lines = int(display.get_width() / line_width)
 # Store all drawn lines in the list
 drawn_lines = []
 
-line_group = pygame.sprite.Group()
 
-
-class Line(pygame.sprite.Sprite):
+class Line():
     """A class to manage a single line parameters"""
 
     def __init__(self, color):
-        super(Line, self).__init__()
         self.width = line_width  # 10
         self.height = random.randint(-400, 0)
         self.color = color
         self.surface = pygame.Surface((self.width, abs(self.height)))
         self.surface.fill(self.color)
         self.rect = self.surface.get_rect()
-        self.rect.x = display_rect.bottomleft[0]
         self.rect.bottom = display_rect.bottom
 
 
@@ -70,7 +66,6 @@ def generate_lines():
         line = Line(new_color)
         line.rect.x += line_x_position
         drawn_lines.append(line)
-        line_group.add(line)
         line_x_position += line_width
 
 
@@ -91,6 +86,10 @@ def redraw_lines():
 def sort():
     """Sort the objects inside the line list by height"""
     drawn_lines.sort(key=operator.attrgetter('height'))
+    line_x_position = 0
+    for line in drawn_lines:
+        line.rect.x = line_x_position
+        line_x_position += line_width
 
 
 def draw_sorted():
@@ -116,7 +115,7 @@ def main():
                     sort()
                     is_sorted = True
 
-        # Generate lines (if not generated)
+        # Generate lines in list
         if not is_generated:
             generate_lines()
             is_generated = True
@@ -126,10 +125,8 @@ def main():
 
         if not is_sorted:
             draw_lines()
-            print("draw lines")
         else:
             draw_sorted()
-            print("draw sorted")
 
         # Refresh/update the images on the display
         pygame.display.update()
