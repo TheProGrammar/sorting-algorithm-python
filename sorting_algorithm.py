@@ -1,5 +1,6 @@
 import pygame
 import random
+import operator
 from colors import color_dict
 
 # Initialize pygame essentials
@@ -10,8 +11,8 @@ image = pygame.image.load("bg.jpg")
 image_rect = image.get_rect()
 
 # Screen settings
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 400
+DISPLAY_WIDTH = 1000
+DISPLAY_HEIGHT = 400
 
 # Colors
 WHITE = (255, 255, 255)
@@ -21,7 +22,7 @@ SCREEN_BG_COLOR = (30, 30, 30)
 FPS = 1000
 
 # Set the main preview display/window with width and height
-display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
 # Draw the display shape sized and positioned as display
 # so we can use it's coordinates for positioning other elements
@@ -35,10 +36,6 @@ line_width = 10
 
 # Total number of lines in the screen
 total_lines = int(display.get_width() / line_width)
-
-# Pygame draws objects from the center/middle of the object
-# Shift all lines to the right by half of the line width to fix the issue
-line_offset = line_width / 2 - 1
 
 # Store all drawn lines in the list
 drawn_lines = []
@@ -93,15 +90,19 @@ def redraw_lines():
 
 def sort():
     """Sort the objects inside the line list by height"""
-    sorted_list = sorted(drawn_lines, key=lambda x: x.height, reverse=True)
-    for line in sorted_list:
-        print(line.height)
+    drawn_lines.sort(key=operator.attrgetter('height'))
+
+
+def draw_sorted():
+    for line in drawn_lines:
+        display.blit(line.surface, line.rect)
 
 
 def main():
     """The main loop"""
 
     is_generated = False
+    is_sorted = False
 
     while True:
         # Handle the user input events
@@ -113,6 +114,7 @@ def main():
                     redraw_lines()
                 elif event.key == pygame.K_RIGHT:
                     sort()
+                    is_sorted = True
 
         # Generate lines (if not generated)
         if not is_generated:
@@ -120,8 +122,14 @@ def main():
             is_generated = True
 
         # Draws the background image
-        display.blit(image, image_rect)
-        draw_lines()
+        display.fill(SCREEN_BG_COLOR)
+
+        if not is_sorted:
+            draw_lines()
+            print("draw lines")
+        else:
+            draw_sorted()
+            print("draw sorted")
 
         # Refresh/update the images on the display
         pygame.display.update()
